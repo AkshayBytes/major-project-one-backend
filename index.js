@@ -6,7 +6,7 @@ const Category = require("./models/categories.model");
 initializeDatabase();
 require("dotenv").config();
 const express = require("express");
-const { error } = require("console");
+//const { error } = require("console");
 const app = express();
 app.use(express.json())
 
