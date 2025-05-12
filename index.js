@@ -1,5 +1,5 @@
 const { initializeDatabase } = require("./db/db.connect");
-const fs = require("fs");
+//const fs = require("fs");
 const Product = require("./models/product.models");
 const Category = require("./models/categories.model");
 
@@ -10,11 +10,11 @@ const { error } = require("console");
 const app = express();
 app.use(express.json())
 
-const jsonData = fs.readFileSync('products.json','utf-8')
-const productsData = JSON.parse(jsonData);
+//const jsonData = fs.readFileSync('products.json','utf-8')
+//const productsData = JSON.parse(jsonData);
 
-const jsonData2 = fs.readFileSync('categories.json','utf-8')
-const categoriesData2 = JSON.parse(jsonData2)
+//const jsonData2 = fs.readFileSync('categories.json','utf-8')
+//const categoriesData2 = JSON.parse(jsonData2)
 
 const cors = require("cors");
 const corsOptions = {
@@ -25,61 +25,61 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-async function seedCategories() {
-    try {
-        for (const categoryData of categoriesData2) {
-            const newCategory = new Category({
-                category: categoryData.catagory
-            });
-            await newCategory.save();
-        }
-        console.log("Categories seeded successfully");
-    } catch (error) {
-        console.log("Error seeding categories:", error);
-    }
-}
+// async function seedCategories() {
+//     try {
+//         for (const categoryData of categoriesData2) {
+//             const newCategory = new Category({
+//                 category: categoryData.catagory
+//             });
+//             await newCategory.save();
+//         }
+//         console.log("Categories seeded successfully");
+//     } catch (error) {
+//         console.log("Error seeding categories:", error);
+//     }
+// }
 
-async function seedProducts() {
-    try {
-        // First get all categories
-        const categories = await Category.find();
-        const categoryMap = {};
-        categories.forEach(cat => {
-            categoryMap[cat.category] = cat._id;
-        });
+// async function seedProducts() {
+//     try {
+//         // First get all categories
+//         const categories = await Category.find();
+//         const categoryMap = {};
+//         categories.forEach(cat => {
+//             categoryMap[cat.category] = cat._id;
+//         });
 
-        for (const productData of productsData) {
-            const categoryId = categoryMap[productData.category];
-            if (!categoryId) {
-                console.log(`Category not found for product: ${productData.productName}`);
-                continue;
-            }
+//         for (const productData of productsData) {
+//             const categoryId = categoryMap[productData.category];
+//             if (!categoryId) {
+//                 console.log(`Category not found for product: ${productData.productName}`);
+//                 continue;
+//             }
 
-            const newProduct = new Product({
-                category: categoryId,
-                productImgUrl: productData.productImgUrl,
-                productName: productData.productName,
-                productStarRating: productData.productStarRating,
-                productPrice: productData.productPrice,
-                productActualPrice: productData.productActualPrice,
-                quantity: productData.quantity,
-                productSize: productData.productSize,
-                description: productData.description
-            });
+//             const newProduct = new Product({
+//                 category: categoryId,
+//                 productImgUrl: productData.productImgUrl,
+//                 productName: productData.productName,
+//                 productStarRating: productData.productStarRating,
+//                 productPrice: productData.productPrice,
+//                 productActualPrice: productData.productActualPrice,
+//                 quantity: productData.quantity,
+//                 productSize: productData.productSize,
+//                 description: productData.description
+//             });
 
-            await newProduct.save();
-        }
-        console.log("Products seeded successfully");
-    } catch (error) {
-        console.log("Error seeding products:", error);
-    }
-}
+//             await newProduct.save();
+//         }
+//         console.log("Products seeded successfully");
+//     } catch (error) {
+//         console.log("Error seeding products:", error);
+//     // }
+// }
 
-// Seed data
-async function seedData() {
-    await seedCategories();
-    await seedProducts();
-}
+// // Seed data
+// async function seedData() {
+//     await seedCategories();
+//     await seedProducts();
+// }
 
 //seedData();
 
